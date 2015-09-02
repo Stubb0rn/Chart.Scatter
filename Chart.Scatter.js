@@ -842,6 +842,7 @@
 				if (elements.length == 1) {
 
 					new chartjs.Tooltip({
+						pos: tooltipPosition,
 						x: Math.round(tooltipPosition.x),
 						y: Math.round(tooltipPosition.y),
 						xPadding: this.options.tooltipXPadding,
@@ -874,6 +875,7 @@
 					}, this);
 
 					new chartjs.MultiTooltip({
+						pos: tooltipPosition,
 						x: Math.round(tooltipPosition.x),
 						y: Math.round(tooltipPosition.y),
 						xPadding: this.options.tooltipXPadding,
