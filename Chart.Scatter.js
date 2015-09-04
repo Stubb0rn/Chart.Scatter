@@ -491,19 +491,20 @@
 	chartjs.ScatterDateScale = chartjs.ScatterNumberScale.extend({
 
 		_calculateDateScaleRange: function (valueMin, valueMax, drawingSize, fontSize) {
-			var maxSteps = drawingSize / (fontSize * 12);
+			var maxSteps = drawingSize / (fontSize * 12),
+				min = +valueMin,
+				max = +valueMax;
 
-			var offset = this.useUtc ? 0 : new Date().getTimezoneOffset() * 60000,
-				min = +valueMin - offset,
-				max = +valueMax - offset;
+			if(min === max) {
+				max = max + Math.abs(max * 0.2);
+			}
 
 			var steps = Math.floor(maxSteps),
-				stepValue = (max - min) / steps,
-				end = min + stepValue * steps;
+				stepValue = (max - min) / steps;
 
 			return {
-				min: min + offset,
-				max: end + offset,
+				min: min,
+				max: max,
 				steps: steps,
 				stepValue: stepValue
 			};
