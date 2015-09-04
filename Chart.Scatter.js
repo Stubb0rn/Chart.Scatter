@@ -17,28 +17,9 @@
 
 	var helpers = chartjs.helpers,
 		hlp = {
-			formatDateValue: function (date, tFormat, dFormat, useUtc) {
-
+			formatDateValue: function (date, dFormat, useUtc) {
 				date = new Date(+date);
-
-				var ms = useUtc ? date.getUTCMilliseconds() : date.getMilliseconds();
-
-				if (ms) {
-
-					return ('000' + ms).slice(-3);
-				}
-
-				var hasTime = useUtc
-					? date.getUTCHours() + date.getUTCMinutes() + date.getUTCSeconds()
-					: date.getHours() + date.getMinutes() + date.getSeconds();
-
-				if (hasTime) {
-
-					return dateFormat(date, tFormat || "h:MM", useUtc);
-				} else {
-
-					return dateFormat(date, dFormat || "mmm d", useUtc);
-				}
+				return dateFormat(date, dFormat, useUtc);
 			},
 
 			getElementOrDefault: function (array, index, defaultValue) {
@@ -201,9 +182,7 @@
 		// DATE SCALE
 		scaleType: "number",
 		useUtc: true,
-		scaleDateFormat: "mmm d",
-		scaleTimeFormat: "h:MM",
-		scaleDateTimeFormat: "mmm d, yyyy, hh:MM",
+		scaleDateFormat: "mm.dd.yyyy hh:MM",
 
 		// LINES
 		datasetStroke: true,				// Boolean - Whether to show a stroke for datasets
@@ -542,7 +521,7 @@
 
 		argToString: function (arg) {
 
-			return dateFormat(+arg, this.dateTimeFormat, this.useUtc);
+			return dateFormat(+arg, this.dateFormat, this.useUtc);
 		},
 
 		generateXLabels: function () {
@@ -555,7 +534,7 @@
 
 				var value = graphMin + stepValue * index;
 
-				labelsArray[index] = hlp.formatDateValue(value, this.timeFormat, this.dateFormat, this.useUtc);
+				labelsArray[index] = hlp.formatDateValue(value, this.dateFormat, this.useUtc);
 			}, this);
 
 			this.xLabels = labelsArray;
@@ -748,9 +727,7 @@
 
 				// dates
 				useUtc: this.options.useUtc,
-				dateFormat: this.options.scaleDateFormat,
-				timeFormat: this.options.scaleTimeFormat,
-				dateTimeFormat: this.options.scaleDateTimeFormat
+				dateFormat: this.options.scaleDateFormat
 			};
 
 			return this.options.scaleType === "date"
